@@ -21,6 +21,8 @@ public class BattleShips
         deployPlayerBattleShips();
         deployComputerBattleShips();
 
+        playerAttack();
+
         //TODO spięcie pozostałych metod wewnętrz
     }
 
@@ -88,7 +90,7 @@ public class BattleShips
         System.out.print("Graczu, rozmieść swoje statki! (ilość: 6)");
         System.out.println();
 
-        for (int i = 1; i <= BattleShips.playerShips; ) {
+        for (int i = 1; i <= BattleShips.playerShips;) {
             System.out.print("Podaj numer wiersza dla swojego " + i + " statku: ");
             int x = input.nextInt();
             System.out.print("Podaj numer kolumny dla swojego " + i + " statku: ");
@@ -138,14 +140,59 @@ public class BattleShips
         }
     }
 
-    public static void playerAttack()
+    private static void playerAttack()
     {
-        //TODO https://github.com/Aluskin2/java-battleships/issues/4
+        int x;
+        int y;
+        boolean retryAttack = true;
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Twoja kolej na atak! podaj koordynaty!");
+
+        do {
+            System.out.print("Podaj wartość osi X do ataku: ");
+            x = input.nextInt();
+            System.out.print("Podaj wartość osi Y do ataku: ");
+            y = input.nextInt();
+
+            if (
+                x > 0
+                && y > 0
+                && x <= battleGroundRows
+                && y <= battleGroundColumns
+            ) {
+                switch (computerBattleGround[x - 1][y - 1]) {
+                    case "S" -> {
+                        System.out.print("Brawo, zatopiłeś statek komputera!");
+                        computerBattleGround[x - 1][y - 1] = "O";
+                        playerShotsGround[x - 1][y - 1] = "X";
+                        --computerShips;
+                        retryAttack = false;
+                    }
+                    case "O" -> {
+                        System.out.print("Niestety, spudłowałeś");
+                        playerShotsGround[x - 1][y - 1] = "X";
+                        retryAttack = false;
+                    }
+                }
+            } else {
+                System.out.println("Nie możesz wykonywać ataku na koordynaty poza wymiarami pola bitwy!");
+            }
+        } while (retryAttack);
     }
 
-    public static void computerAttack()
+    private static void computerAttack()
     {
         //TODO https://github.com/Aluskin2/java-battleships/issues/5
+    }
+
+    public static void battle()
+    {
+        playerAttack();
+        computerAttack();
+
+        printBattleground(playerBattleGround);
+        printBattleground(playerShotsGround);
     }
 
     public static void endGame()
