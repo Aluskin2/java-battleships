@@ -18,6 +18,7 @@ public class BattleShips
     {
         createBattlegrounds();
         deployPlayerBattleShips();
+        deployComputerBattleShips();
 
         //TODO spięcie pozostałych metod wewnętrz
     }
@@ -116,9 +117,27 @@ public class BattleShips
         }
     }
 
-    public static void fillComputerBattleground()
+    public static void deployComputerBattleShips()
     {
-        //TODO https://github.com/Aluskin2/java-battleships/issues/6
+        BattleShips.computerShips = 6;
+
+        System.out.println("Rozmieszczam sześć statków komputera na planszy...");
+        System.out.println();
+
+        for (int i = 1; i <= BattleShips.computerShips; ) {
+            int x = (int)(Math.random() * battleGroundColumns + 1);
+            int y = (int)(Math.random() * battleGroundRows + 1);
+
+            if(
+              (x >= 0 && x < battleGroundRows)
+              && (y >= 0 && y < battleGroundColumns)
+              && (Objects.equals(computerBattleGround[x][y], "O"))
+            ) {
+                computerBattleGround[x][y] = "S";
+                System.out.println(i + ". statek rozmieszczony");
+                i++;
+            }
+        }
     }
 
     public static void playerAttack()
