@@ -18,24 +18,25 @@ public class BattleShips
     public static void main(String[] args)
     {
         createBattlegrounds();
+
         deployPlayerBattleShips();
         deployComputerBattleShips();
 
-        playerAttack();
+        battle();
 
         //TODO spięcie pozostałych metod wewnętrz
     }
 
     public static void createBattlegrounds()
     {
-        System.out.print("PLAYER BATTLEGROUND");
+        System.out.print("POLE GRACZA");
         System.out.print("  ");
 
         createBattleground(playerBattleGround);
         printBattleground(playerBattleGround);
         System.out.println();
 
-        System.out.print("PLAYER SHOTS / ENEMY BATTLEGROUND");
+        System.out.print("STRZAŁY GRACZA / POLE KOMPUTERA");
         System.out.print("  ");
 
         createBattleground(playerShotsGround);
@@ -99,25 +100,20 @@ public class BattleShips
             if (
               (x >= 1 && x <= battleGroundRows)
               && (y >= 1 && y <= battleGroundColumns)
-              && (Objects.equals(playerBattleGround[x-1][y-1], "O"))
             ) {
-                playerBattleGround[x-1][y-1] = "S";
-                i++;
-            } else if (
-              (x >= 1 && x <= battleGroundRows)
-              && (y >= 1 && y <= battleGroundColumns)
-              && Objects.equals(playerBattleGround[x-1][y-1], "S")
-            ) {
-                System.out.println("Nie możesz umieścić dwóch statków w tym samym miejscu!");
-            } else if (
-              (x <= 0 || x >= battleGroundRows)
-              || (y <= 0 || y >= battleGroundColumns)
-            ) {
+                switch (playerBattleGround[x - 1][y - 1]) {
+                    case "O" -> {
+                        playerBattleGround[x - 1][y - 1] = "S";
+                        i++;
+                    }
+                    case "S" -> System.out.println("Nie możesz umieścić dwóch statków w tym samym miejscu!");
+                }
+            } else {
                 System.out.println("Nie możesz umieścić statku poza wymiarami pola bitwy!");
             }
-
-            printBattleground(playerBattleGround);
         }
+
+        printBattleground(playerBattleGround);
     }
 
     public static void deployComputerBattleShips()
@@ -145,8 +141,8 @@ public class BattleShips
         int x;
         int y;
         boolean retryAttack = true;
-        Scanner input = new Scanner(System.in);
 
+        Scanner input = new Scanner(System.in);
         System.out.println("Twoja kolej na atak! podaj koordynaty!");
 
         do {
