@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Scanner;
 
 public class BattleShips
@@ -107,8 +108,8 @@ public class BattleShips
             ) {
                 System.out.println("Nie możesz umieścić dwóch statków w tym samym miejscu!");
             } else if (
-              (x < 0 || x >= battleGroundRows)
-              || (y < 0 || y >= battleGroundColumns)
+              (x <= 0 || x >= battleGroundRows)
+              || (y <= 0 || y >= battleGroundColumns)
             ) {
                 System.out.println("Nie możesz umieścić statku poza wymiarami pola bitwy!");
             }
@@ -119,21 +120,18 @@ public class BattleShips
 
     public static void deployComputerBattleShips()
     {
+        Random random = new Random();
         BattleShips.computerShips = 6;
 
         System.out.println("Rozmieszczam sześć statków komputera na planszy...");
         System.out.println();
 
         for (int i = 1; i <= BattleShips.computerShips; ) {
-            int x = (int)(Math.random() * battleGroundColumns + 1);
-            int y = (int)(Math.random() * battleGroundRows + 1);
+            int x = random.nextInt(battleGroundColumns - 1) + 1;
+            int y = random.nextInt(battleGroundRows - 1) + 1;
 
-            if(
-              (x >= 0 && x < battleGroundRows)
-              && (y >= 0 && y < battleGroundColumns)
-              && (Objects.equals(computerBattleGround[x][y], "O"))
-            ) {
-                computerBattleGround[x][y] = "S";
+            if (Objects.equals(computerBattleGround[x-1][y-1], "O")) {
+                computerBattleGround[x-1][y-1] = "S";
                 System.out.println(i + ". statek rozmieszczony");
                 i++;
             }
