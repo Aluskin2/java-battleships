@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class BattleShips
 {
@@ -15,6 +17,7 @@ public class BattleShips
     public static void main(String[] args)
     {
         createBattlegrounds();
+        deployPlayerBattleShips();
 
         //TODO spięcie pozostałych metod wewnętrz
     }
@@ -75,9 +78,42 @@ public class BattleShips
         System.out.println();
     }
 
-    public static void fillPlayerBattleground()
+    public static void deployPlayerBattleShips()
     {
-        //TODO https://github.com/Aluskin2/java-battleships/issues/3
+        Scanner input = new Scanner(System.in);
+        BattleShips.playerShips = 6;
+
+        System.out.print("Graczu, rozmieść swoje statki! (ilość: 6)");
+        System.out.println();
+
+        for (int i = 1; i <= BattleShips.playerShips; ) {
+            System.out.print("Podaj numer wiersza dla swojego " + i + " statku: ");
+            int x = input.nextInt();
+            System.out.print("Podaj numer kolumny dla swojego " + i + " statku: ");
+            int y = input.nextInt();
+
+            if (
+              (x >= 1 && x <= battleGroundRows)
+              && (y >= 1 && y <= battleGroundColumns)
+              && (Objects.equals(playerBattleGround[x-1][y-1], "O"))
+            ) {
+                playerBattleGround[x-1][y-1] = "S";
+                i++;
+            } else if (
+              (x >= 1 && x <= battleGroundRows)
+              && (y >= 1 && y <= battleGroundColumns)
+              && Objects.equals(playerBattleGround[x-1][y-1], "S")
+            ) {
+                System.out.println("Nie możesz umieścić dwóch statków w tym samym miejscu!");
+            } else if (
+              (x < 0 || x >= battleGroundRows)
+              || (y < 0 || y >= battleGroundColumns)
+            ) {
+                System.out.println("Nie możesz umieścić statku poza wymiarami pola bitwy!");
+            }
+
+            printBattleground(playerBattleGround);
+        }
     }
 
     public static void fillComputerBattleground()
