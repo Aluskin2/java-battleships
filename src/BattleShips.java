@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class BattleShips
 {
     public static int battleGroundColumns = 8;
@@ -20,54 +22,57 @@ public class BattleShips
     public static void createBattlegrounds()
     {
         System.out.print("PLAYER BATTLEGROUND");
-        System.out.println();
         System.out.print("  ");
 
-        createBattleground(playerBattleGround, true);
+        createBattleground(playerBattleGround);
+        printBattleground(playerBattleGround);
         System.out.println();
 
         System.out.print("PLAYER SHOTS / ENEMY BATTLEGROUND");
+        System.out.print("  ");
+
+        createBattleground(playerShotsGround);
+        printBattleground(playerShotsGround);
+        System.out.println();
+
+        createBattleground(computerBattleGround);
+    }
+
+    private static void createBattleground(String[][] battleground)
+    {
+        for (String[] strings : battleground) {
+            Arrays.fill(strings, "O");
+        }
+    }
+
+    public static void printBattleground(String[][] battleground)
+    {
         System.out.println();
         System.out.print("  ");
 
-        createBattleground(playerShotsGround, true);
+        for (int i = 1; i <= battleGroundColumns; i++) {
+            System.out.print(i);
+        }
+
         System.out.println();
 
-        createBattleground(computerBattleGround, false);
-    }
+        for (int x = 0; x < battleground.length; x++) {
+            System.out.print((x + 1) + "|");
 
-    private static void createBattleground(String[][] battleground, Boolean print)
-    {
-        if (print) {
-            for (int i = 1; i <= battleGroundColumns; i++) {
-                System.out.print(i);
+            for (int y = 0; y < battleground[x].length; y++) {
+                System.out.print(battleground[x][y]);
             }
-            System.out.println();
+
+            System.out.println("|" + (x + 1));
         }
 
-        for (int i = 0; i < battleground.length; i++) {
-            for (int j = 0; j < battleground[i].length; j++) {
-                battleground[i][j] = "O";
-                if (print) {
-                    if (j == 0) {
-                        System.out.print((i + 1) + "|" + battleground[i][j]);
-                    } else if (j == battleground[i].length - 1) {
-                        System.out.print(battleground[i][j] + "|" + (i + 1));
-                    } else {
-                        System.out.print(battleground[i][j]);
-                    }
-                }
-            }
-            System.out.println();
+        System.out.print("  ");
+
+        for (int i = 1; i <= battleGroundColumns; i++) {
+            System.out.print(i);
         }
 
-        if (print) {
-            System.out.print("  ");
-            for (int i = 1; i <= battleGroundColumns; i++) {
-                System.out.print(i);
-            }
-            System.out.println();
-        }
+        System.out.println();
     }
 
     public static void fillPlayerBattleground()
@@ -88,16 +93,6 @@ public class BattleShips
     public static void computerAttack()
     {
         //TODO https://github.com/Aluskin2/java-battleships/issues/5
-    }
-
-    public static void getPlayerBattlegroundView()
-    {
-        //TODO https://github.com/Aluskin2/java-battleships/issues/2
-    }
-
-    public static void getPlayerShotsView()
-    {
-        //TODO https://github.com/Aluskin2/java-battleships/issues/7
     }
 
     public static void endGame()
