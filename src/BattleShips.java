@@ -22,9 +22,11 @@ public class BattleShips
         deployPlayerBattleShips();
         deployComputerBattleShips();
 
-        battle();
+        do {
+            battle();
+        } while (BattleShips.playerShips != 0 && BattleShips.computerShips != 0);
 
-        //TODO spięcie pozostałych metod wewnętrz
+        endGame();
     }
 
     public static void createBattlegrounds()
@@ -179,7 +181,33 @@ public class BattleShips
 
     private static void computerAttack()
     {
-        //TODO https://github.com/Aluskin2/java-battleships/issues/5
+        boolean retryAttack = true;
+
+        Random random = new Random();
+
+        System.out.println();
+        System.out.println("Kolej na atak komputera...");
+
+        do {
+            int x = random.nextInt(battleGroundColumns - 1) + 1;
+            int y = random.nextInt(battleGroundRows - 1) + 1;
+
+            switch (computerBattleGround[x - 1][y - 1]) {
+                case "S" -> {
+                    System.out.print("Ups, komputer zatopił Twój statek!");
+                    playerBattleGround[x - 1][y - 1] = "X";
+                    --playerShips;
+                    retryAttack = false;
+                }
+                case "O" -> {
+                    System.out.print("komputer spudłował!");
+                    playerBattleGround[x - 1][y - 1] = "X";
+                    retryAttack = false;
+                }
+                case "X" -> // jeśli komputer zaatakował to samo miejsce, powtarzamy atak
+                        System.out.print("komputer zaatkował to samo miejsce co wcześniej!, jeszcze raz...");
+            }
+        } while (retryAttack);
     }
 
     public static void battle()
@@ -187,12 +215,25 @@ public class BattleShips
         playerAttack();
         computerAttack();
 
+        System.out.println();
+        System.out.print("POLE GRACZA");
         printBattleground(playerBattleGround);
+
+        System.out.print("STRZAŁY GRACZA / POLE KOMPUTERA");
         printBattleground(playerShotsGround);
+
+        System.out.println();
+        System.out.printf("Twoje statki: %s | Statki komputera: %s", playerShips, computerShips);
     }
 
     public static void endGame()
     {
-        //TODO https://github.com/Aluskin2/java-battleships/issues/8
+        if (BattleShips.computerShips == 0) {
+            System.out.println("Gratulacje, wygrałeś!");
+        }
+
+        if (BattleShips.playerShips == 0) {
+            System.out.println("Przykro mi, przegrałeś. Spróbuj ponownie!");
+        }
     }
 }
