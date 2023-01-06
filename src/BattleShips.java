@@ -81,7 +81,7 @@ public class BattleShips
     {
         Scanner input = new Scanner(System.in);
 
-        System.out.println("Graczu, rozmieść swoje statki! (ilość: 6)");
+        System.out.printf("Graczu, rozmieść swoje statki! (ilość: %d)", playerShips);
         System.out.printf("Wymiary pola bitwy: %s/%s", battleGroundColumns, battleGroundRows);
         System.out.println();
 
