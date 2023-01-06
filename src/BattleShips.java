@@ -5,11 +5,15 @@ import java.util.Scanner;
 
 public class BattleShips
 {
-    public static int battleGroundColumns = 8;
-    public static int battleGroundRows = 8;
+    public static final String shipSymbol = "S";
+    public static final String shotSymbol = "X";
+    public static final String emptyFieldSymbol = "O";
 
-    public static int playerShips;
-    public static int computerShips;
+    public static int battleGroundColumns = 6;
+    public static int battleGroundRows = 6;
+
+    public static int playerShips = 6;
+    public static int computerShips = 6;
 
     public static String[][] playerBattleGround = new String[battleGroundColumns][battleGroundRows];
     public static String[][] playerShotsGround = new String[battleGroundColumns][battleGroundRows];
@@ -31,27 +35,15 @@ public class BattleShips
 
     public static void createBattlegrounds()
     {
-        System.out.print("POLE GRACZA");
-        System.out.print("  ");
-
         createBattleground(playerBattleGround);
-        printBattleground(playerBattleGround);
-        System.out.println();
-
-        System.out.print("STRZAŁY GRACZA / POLE KOMPUTERA");
-        System.out.print("  ");
-
         createBattleground(playerShotsGround);
-        printBattleground(playerShotsGround);
-        System.out.println();
-
         createBattleground(computerBattleGround);
     }
 
     private static void createBattleground(String[][] battleground)
     {
         for (String[] strings : battleground) {
-            Arrays.fill(strings, "O");
+            Arrays.fill(strings, emptyFieldSymbol);
         }
     }
 
@@ -88,9 +80,9 @@ public class BattleShips
     public static void deployPlayerBattleShips()
     {
         Scanner input = new Scanner(System.in);
-        BattleShips.playerShips = 6;
 
-        System.out.print("Graczu, rozmieść swoje statki! (ilość: 6)");
+        System.out.println("Graczu, rozmieść swoje statki! (ilość: 6)");
+        System.out.printf("Wymiary pola bitwy: %s/%s", battleGroundColumns, battleGroundRows);
         System.out.println();
 
         for (int i = 1; i <= BattleShips.playerShips;) {
@@ -104,34 +96,39 @@ public class BattleShips
               && (y >= 1 && y <= battleGroundColumns)
             ) {
                 switch (playerBattleGround[x - 1][y - 1]) {
-                    case "O" -> {
-                        playerBattleGround[x - 1][y - 1] = "S";
+                    case emptyFieldSymbol -> {
+                        playerBattleGround[x - 1][y - 1] = shipSymbol;
                         i++;
                     }
-                    case "S" -> System.out.println("Nie możesz umieścić dwóch statków w tym samym miejscu!");
+                    case shipSymbol -> System.out.println("Nie możesz umieścić dwóch statków w tym samym miejscu!");
                 }
             } else {
                 System.out.println("Nie możesz umieścić statku poza wymiarami pola bitwy!");
             }
         }
 
+        System.out.println();
+        System.out.print("POLE GRACZA");
         printBattleground(playerBattleGround);
+
+        System.out.println();
+        System.out.print("STRZAŁY GRACZA / POLE KOMPUTERA");
+        printBattleground(playerShotsGround);
     }
 
     public static void deployComputerBattleShips()
     {
         Random random = new Random();
-        BattleShips.computerShips = 6;
 
-        System.out.println("Rozmieszczam sześć statków komputera na planszy...");
         System.out.println();
+        System.out.println("Rozmieszczam sześć statków komputera na planszy...");
 
         for (int i = 1; i <= BattleShips.computerShips; ) {
             int x = random.nextInt(battleGroundColumns - 1) + 1;
             int y = random.nextInt(battleGroundRows - 1) + 1;
 
-            if (Objects.equals(computerBattleGround[x-1][y-1], "O")) {
-                computerBattleGround[x-1][y-1] = "S";
+            if (Objects.equals(computerBattleGround[x-1][y-1], emptyFieldSymbol)) {
+                computerBattleGround[x-1][y-1] = shipSymbol;
                 System.out.println(i + ". statek rozmieszczony");
                 i++;
             }
@@ -145,6 +142,8 @@ public class BattleShips
         boolean retryAttack = true;
 
         Scanner input = new Scanner(System.in);
+
+        System.out.println();
         System.out.println("Twoja kolej na atak! podaj koordynaty!");
 
         do {
@@ -154,27 +153,37 @@ public class BattleShips
             y = input.nextInt();
 
             if (
-                x > 0
-                && y > 0
-                && x <= battleGroundRows
-                && y <= battleGroundColumns
+                !(
+                  x > 0
+                  && y > 0
+                  && x <= battleGroundRows
+                  && y <= battleGroundColumns
+                )
             ) {
-                switch (computerBattleGround[x - 1][y - 1]) {
-                    case "S" -> {
-                        System.out.print("Brawo, zatopiłeś statek komputera!");
-                        computerBattleGround[x - 1][y - 1] = "O";
-                        playerShotsGround[x - 1][y - 1] = "X";
-                        --computerShips;
-                        retryAttack = false;
-                    }
-                    case "O" -> {
-                        System.out.print("Niestety, spudłowałeś");
-                        playerShotsGround[x - 1][y - 1] = "X";
-                        retryAttack = false;
-                    }
-                }
-            } else {
                 System.out.println("Nie możesz wykonywać ataku na koordynaty poza wymiarami pola bitwy!");
+                continue;
+            }
+
+            if (Objects.equals(playerShotsGround[x - 1][y - 1], shotSymbol)) {
+                System.out.println("Już wykonywałeś atak na te koordynaty, spróbuj ponownie!");
+                continue;
+            }
+
+            switch (computerBattleGround[x - 1][y - 1]) {
+                case shipSymbol -> {
+                    System.out.print("Brawo, zatopiłeś statek komputera!");
+
+                    computerBattleGround[x - 1][y - 1] = emptyFieldSymbol;
+                    playerShotsGround[x - 1][y - 1] = shotSymbol;
+                    --computerShips;
+                    retryAttack = false;
+                }
+                case emptyFieldSymbol -> {
+                    System.out.print("Niestety, spudłowałeś");
+
+                    playerShotsGround[x - 1][y - 1] = shotSymbol;
+                    retryAttack = false;
+                }
             }
         } while (retryAttack);
     }
@@ -193,19 +202,22 @@ public class BattleShips
             int y = random.nextInt(battleGroundRows - 1) + 1;
 
             switch (computerBattleGround[x - 1][y - 1]) {
-                case "S" -> {
+                case shipSymbol -> {
                     System.out.print("Ups, komputer zatopił Twój statek!");
-                    playerBattleGround[x - 1][y - 1] = "X";
+
+                    playerBattleGround[x - 1][y - 1] = shotSymbol;
                     --playerShips;
                     retryAttack = false;
                 }
-                case "O" -> {
+                case emptyFieldSymbol -> {
                     System.out.print("komputer spudłował!");
-                    playerBattleGround[x - 1][y - 1] = "X";
+
+                    playerBattleGround[x - 1][y - 1] = shotSymbol;
                     retryAttack = false;
                 }
-                case "X" -> // jeśli komputer zaatakował to samo miejsce, powtarzamy atak
-                        System.out.print("komputer zaatkował to samo miejsce co wcześniej!, jeszcze raz...");
+                case shotSymbol -> { // jeśli komputer zaatakował to samo miejsce, powtarzamy atak
+                    System.out.print("komputer zaatkował to samo miejsce co wcześniej!, jeszcze raz...");
+                }
             }
         } while (retryAttack);
     }
@@ -219,6 +231,7 @@ public class BattleShips
         System.out.print("POLE GRACZA");
         printBattleground(playerBattleGround);
 
+        System.out.println();
         System.out.print("STRZAŁY GRACZA / POLE KOMPUTERA");
         printBattleground(playerShotsGround);
 
@@ -229,10 +242,12 @@ public class BattleShips
     public static void endGame()
     {
         if (BattleShips.computerShips == 0) {
+            System.out.println();
             System.out.println("Gratulacje, wygrałeś!");
         }
 
         if (BattleShips.playerShips == 0) {
+            System.out.println();
             System.out.println("Przykro mi, przegrałeś. Spróbuj ponownie!");
         }
     }
