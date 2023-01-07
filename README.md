@@ -1,5 +1,5 @@
 # java-battleships
-It was project made by me for Java programming classes
+It was a project made by me for Java programming classes
 
 You can start the game running the **Main.java** file
 
