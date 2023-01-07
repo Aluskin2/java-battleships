@@ -16,10 +16,10 @@ public class BattleShips
             Battle.battle();
         } while (BattleShips.playerShips != 0 && BattleShips.computerShips != 0);
 
-        endGame();
+        printGameResult();
     }
 
-    public static void endGame()
+    public static void printGameResult()
     {
         if (BattleShips.computerShips == 0) {
             Common.addEmptyLine();
@@ -29,6 +29,11 @@ public class BattleShips
         if (BattleShips.playerShips == 0) {
             Common.addEmptyLine();
             System.out.print("Przykro mi, przegrałeś. Spróbuj ponownie!");
+        }
+
+        if (BattleShips.playerShips == 0 && BattleShips.computerShips == 0) {
+            Common.addEmptyLine();
+            System.out.print("REMIS!");
         }
     }
 }

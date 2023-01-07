@@ -4,6 +4,7 @@ import java.util.Random;
 public class Battle
 {
     private static final Random random = new Random();
+    private static boolean retryAttack = true;
 
     public static void battle()
     {
@@ -17,7 +18,6 @@ public class Battle
     {
         int x;
         int y;
-        boolean retryAttack = true;
 
         Common.addEmptyLine();
         System.out.println("Twoja kolej na atak! podaj koordynaty!");
@@ -26,38 +26,28 @@ public class Battle
             x = Validator.getValidCoordinate("X");
             y = Validator.getValidCoordinate("Y");
 
-            if (Objects.equals(Battlegrounds.playerShotsGround[x - 1][y - 1], Const.SHOT_SYMBOL)) {
-                Common.addEmptyLine();
-                System.out.print("Już wykonywałeś atak na te koordynaty, spróbuj ponownie!");
-                Common.addEmptyLine();
-                continue;
+            if (isAlreadyAttackedByPlayer(x, y)) {
+                retryAttack = true;
             }
 
-            switch (Battlegrounds.computerBattleGround[x - 1][y - 1]) {
-                case Const.SHIP_SYMBOL -> {
-                    Common.addEmptyLine();
-                    System.out.print("Brawo, zatopiłeś statek komputera!");
+            String result = Objects.requireNonNull(getAttackResult(x, y, Const.PLAYER));
 
-                    Battlegrounds.computerBattleGround[x - 1][y - 1] = Const.EMPTY_FIELD_SYMBOL;
-                    Battlegrounds.playerShotsGround[x - 1][y - 1] = Const.SHOT_SYMBOL;
-                    --BattleShips.computerShips;
-                    retryAttack = false;
-                }
-                case Const.EMPTY_FIELD_SYMBOL -> {
-                    Common.addEmptyLine();
-                    System.out.print("Niestety, spudłowałeś");
+            if (isMiss(result)) {
+                Battlegrounds.playerShotsGround[x - 1][y - 1] = Const.SHOT_SYMBOL;
+                retryAttack = false;
+            }
 
-                    Battlegrounds.playerShotsGround[x - 1][y - 1] = Const.SHOT_SYMBOL;
-                    retryAttack = false;
-                }
+            if (isHit(result)) {
+                Battlegrounds.computerBattleGround[x - 1][y - 1] = Const.EMPTY_FIELD_SYMBOL;
+                Battlegrounds.playerShotsGround[x - 1][y - 1] = Const.SHOT_SYMBOL;
+                --BattleShips.computerShips;
+                retryAttack = false;
             }
         } while (retryAttack);
     }
 
     private static void computerAttack()
     {
-        boolean retryAttack = true;
-
         Common.addEmptyLine();
         System.out.print("Kolej na atak komputera...");
 
@@ -65,24 +55,77 @@ public class Battle
             int x = random.nextInt(Const.BATTLEGROUND_SIZE - 1) + 1;
             int y = random.nextInt(Const.BATTLEGROUND_SIZE - 1) + 1;
 
-            switch (Battlegrounds.computerBattleGround[x - 1][y - 1]) {
-                case Const.SHIP_SYMBOL -> {
-                    System.out.println("Ups, komputer zatopił Twój statek!");
+            String result = Objects.requireNonNull(getAttackResult(x, y, Const.COMPUTER));
 
-                    Battlegrounds.playerBattleGround[x - 1][y - 1] = Const.SHOT_SYMBOL;
-                    --BattleShips.playerShips;
-                    retryAttack = false;
-                }
-                case Const.EMPTY_FIELD_SYMBOL -> {
-                    System.out.println("komputer spudłował!");
-
-                    Battlegrounds.playerBattleGround[x - 1][y - 1] = Const.SHOT_SYMBOL;
-                    retryAttack = false;
-                }
-                case Const.SHOT_SYMBOL -> { // jeśli komputer zaatakował to samo miejsce, powtarzamy atak
-                    System.out.println("komputer zaatkował to samo miejsce co wcześniej!, jeszcze raz...");
-                }
+            if (isMiss(result)) {
+                Battlegrounds.playerBattleGround[x - 1][y - 1] = Const.SHOT_SYMBOL;
+                retryAttack = false;
             }
+
+            if (isAlreadyAttackedByComputer(result)) {
+                retryAttack = true;
+            }
+
+            if (isHit(result)) {
+                Battlegrounds.playerBattleGround[x - 1][y - 1] = Const.SHOT_SYMBOL;
+                --BattleShips.playerShips;
+                retryAttack = false;
+            }
+
         } while (retryAttack);
+    }
+
+    private static String getAttackResult(int xAxis, int yAxis, String player)
+    {
+        switch (player) {
+            case Const.PLAYER -> {
+                return Battlegrounds.computerBattleGround[xAxis - 1][yAxis - 1];
+            }
+            case Const.COMPUTER -> {
+                return Battlegrounds.playerBattleGround[xAxis - 1][yAxis - 1];
+            }
+        }
+
+        return null;
+    }
+
+    private static boolean isHit(String attackResult)
+    {
+        if (Objects.equals(attackResult, Const.SHIP_SYMBOL)) {
+            System.out.println("Trafiony, zatopiony!");
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private static boolean isMiss(String attackResult)
+    {
+        if (Objects.equals(attackResult, Const.EMPTY_FIELD_SYMBOL)) {
+            Common.addEmptyLine();
+            System.out.print("Pudło!");
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private static boolean isAlreadyAttackedByComputer(String attackResult)
+    {
+        return Objects.equals(attackResult, Const.SHOT_SYMBOL);
+    }
+
+    public static boolean isAlreadyAttackedByPlayer(int xAxis, int yAxis)
+    {
+        if (Objects.equals(Battlegrounds.playerShotsGround[xAxis - 1][yAxis - 1], Const.SHOT_SYMBOL)) {
+            Common.addEmptyLine();
+            System.out.print("Już wykonywałeś atak na te koordynaty, spróbuj ponownie!");
+
+            return true;
+        }
+
+        return false;
     }
 }
