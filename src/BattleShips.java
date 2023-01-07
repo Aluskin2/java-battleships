@@ -3,7 +3,7 @@ import java.util.Random;
 public class BattleShips
 {
     private static final Random random = new Random();
-    public static int playerShips = 2;
+    public static int playerShips = 6;
     public static int computerShips = 6;
 
     public static void deployBattleShips()
