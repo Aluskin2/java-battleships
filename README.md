@@ -1,6 +1,6 @@
 # java-battleships
-projekt na zaliczenie Java
+It was my project made for Java programming classes
 
-działanie gry uruchamiamy w pliku Main.java
+You can start the game running the **Main.java** file
 
-Wielkość pola bitwy i ilość statków można zmodyfikować w pliku Const.java
+Battleground size and number of ships for each player can be modified in **Const.java** file 
