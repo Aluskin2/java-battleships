@@ -19,7 +19,6 @@ public class Battlegrounds
     public static void printBattlegrounds()
     {
         Common.addEmptyLine();
-
         System.out.print("POLE GRACZA");
         printBattleground(playerBattleGround);
 
@@ -42,29 +41,13 @@ public class Battlegrounds
     {
         Common.addEmptyLine();
         System.out.print("  ");
-
-        for (int i = 1; i <= Const.BATTLEGROUND_SIZE; i++) {
-            System.out.print(i);
-        }
+        printBattlegroundHeaderOrFooter();
 
         Common.addEmptyLine();
-
-        for (int x = 0; x < battleground.length; x++) {
-            System.out.print((x + 1) + "|");
-
-            for (int y = 0; y < battleground[x].length; y++) {
-                System.out.print(battleground[x][y]);
-            }
-
-            System.out.println("|" + (x + 1));
-        }
+        printBattlegroundBody(battleground);
 
         System.out.print("  ");
-
-        for (int i = 1; i <= Const.BATTLEGROUND_SIZE; i++) {
-            System.out.print(i);
-        }
-
+        printBattlegroundHeaderOrFooter();
         Common.addEmptyLine();
     }
 
@@ -108,6 +91,26 @@ public class Battlegrounds
                 System.out.println(i + ". statek rozmieszczony");
                 i++;
             }
+        }
+    }
+
+    private static void printBattlegroundHeaderOrFooter()
+    {
+        for (int i = 1; i <= Const.BATTLEGROUND_SIZE; i++) {
+            System.out.print(i);
+        }
+    }
+
+    private static void printBattlegroundBody(String[][] battleground)
+    {
+        for (int x = 0; x < battleground.length; x++) {
+            System.out.print((x + 1) + "|");
+
+            for (int y = 0; y < battleground[x].length; y++) {
+                System.out.print(battleground[x][y]);
+            }
+
+            System.out.println("|" + (x + 1));
         }
     }
 }
