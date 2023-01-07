@@ -20,7 +20,7 @@ public class Battle
         int y;
 
         Common.addEmptyLine();
-        System.out.println("Twoja kolej na atak! podaj koordynaty!");
+        System.out.println("Your turn to attack! give me your coordinates!");
 
         do {
             x = Validator.getValidCoordinate("X");
@@ -50,7 +50,7 @@ public class Battle
     private static void computerAttack()
     {
         Common.addEmptyLine();
-        System.out.print("Kolej na atak komputera...");
+        System.out.print("Computer turn...");
 
         do {
             int x = random.nextInt(Const.BATTLEGROUND_SIZE - 1) + 1;
@@ -93,7 +93,7 @@ public class Battle
     private static boolean isHit(String attackResult)
     {
         if (Objects.equals(attackResult, Const.SHIP_SYMBOL)) {
-            System.out.println("Trafiony, zatopiony!");
+            System.out.println("Hit, and sunk!");
 
             return true;
         }
@@ -105,7 +105,7 @@ public class Battle
     {
         if (Objects.equals(attackResult, Const.EMPTY_FIELD_SYMBOL)) {
             Common.addEmptyLine();
-            System.out.print("Pudło!");
+            System.out.print("Miss!");
 
             return true;
         }
@@ -122,7 +122,7 @@ public class Battle
     {
         if (Objects.equals(Battlegrounds.playerShotsGround[xAxis - 1][yAxis - 1], Const.SHOT_SYMBOL)) {
             Common.addEmptyLine();
-            System.out.println("Już wykonywałeś atak na te koordynaty, spróbuj ponownie!");
+            System.out.println("You already attacked this field, try again!");
 
             return true;
         }
