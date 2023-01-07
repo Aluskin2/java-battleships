@@ -23,7 +23,7 @@ public class Battlegrounds
     public static void printBattlegrounds()
     {
         Common.EmptyLine();
-        System.out.print("PLAYER FIELD");
+        System.out.print("COMPUTER SHOOTS / PLAYER FIELD");
         printBattleground(playerBattleGround);
 
         Common.EmptyLine();
