@@ -6,10 +6,7 @@ public class BattleShips
     public static void main(String[] args)
     {
         Battlegrounds.createBattlegrounds();
-
-        Battlegrounds.deployPlayerBattleShips();
-        Battlegrounds.deployComputerBattleShips();
-
+        Battlegrounds.deployBattleShips();
         Battlegrounds.printBattlegrounds();
 
         do {
@@ -19,7 +16,7 @@ public class BattleShips
         printGameResult();
     }
 
-    public static void printGameResult()
+    private static void printGameResult()
     {
         if (BattleShips.computerShips == 0) {
             Common.addEmptyLine();

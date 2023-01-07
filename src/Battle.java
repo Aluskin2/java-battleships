@@ -118,7 +118,7 @@ public class Battle
         return Objects.equals(attackResult, Const.SHOT_SYMBOL);
     }
 
-    public static boolean isAlreadyAttackedByPlayer(int xAxis, int yAxis)
+    private static boolean isAlreadyAttackedByPlayer(int xAxis, int yAxis)
     {
         if (Objects.equals(Battlegrounds.playerShotsGround[xAxis - 1][yAxis - 1], Const.SHOT_SYMBOL)) {
             Common.addEmptyLine();

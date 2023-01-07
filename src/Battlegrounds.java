@@ -16,6 +16,13 @@ public class Battlegrounds
         createBattleground(computerBattleGround);
     }
 
+    private static void createBattleground(String[][] battleground)
+    {
+        for (String[] strings : battleground) {
+            Arrays.fill(strings, Const.EMPTY_FIELD_SYMBOL);
+        }
+    }
+
     public static void printBattlegrounds()
     {
         Common.addEmptyLine();
@@ -30,13 +37,6 @@ public class Battlegrounds
         System.out.printf("Twoje statki: %s | Statki komputera: %s", BattleShips.playerShips, BattleShips.computerShips);
     }
 
-    private static void createBattleground(String[][] battleground)
-    {
-        for (String[] strings : battleground) {
-            Arrays.fill(strings, Const.EMPTY_FIELD_SYMBOL);
-        }
-    }
-
     private static void printBattleground(String[][] battleground)
     {
         Common.addEmptyLine();
@@ -49,7 +49,35 @@ public class Battlegrounds
         Common.addEmptyLine();
     }
 
-    public static void deployPlayerBattleShips()
+    private static void printBattlegroundHeaderOrFooter()
+    {
+        System.out.print("  ");
+
+        for (int i = 1; i <= Const.BATTLEGROUND_SIZE; i++) {
+            System.out.print(i);
+        }
+    }
+
+    private static void printBattlegroundBody(String[][] battleground)
+    {
+        for (int x = 0; x < battleground.length; x++) {
+            System.out.print((x + 1) + "|");
+
+            for (int y = 0; y < battleground[x].length; y++) {
+                System.out.print(battleground[x][y]);
+            }
+
+            System.out.println("|" + (x + 1));
+        }
+    }
+
+    public static void deployBattleShips()
+    {
+        deployPlayerBattleShips();
+        deployComputerBattleShips();
+    }
+
+    private static void deployPlayerBattleShips()
     {
         int y;
         int x;
@@ -75,7 +103,7 @@ public class Battlegrounds
         }
     }
 
-    public static void deployComputerBattleShips()
+    private static void deployComputerBattleShips()
     {
         Common.addEmptyLine();
         System.out.println("Rozmieszczam sześć statków komputera na planszy...");
@@ -89,28 +117,6 @@ public class Battlegrounds
                 System.out.println(i + ". statek rozmieszczony");
                 i++;
             }
-        }
-    }
-
-    private static void printBattlegroundHeaderOrFooter()
-    {
-        System.out.print("  ");
-
-        for (int i = 1; i <= Const.BATTLEGROUND_SIZE; i++) {
-            System.out.print(i);
-        }
-    }
-
-    private static void printBattlegroundBody(String[][] battleground)
-    {
-        for (int x = 0; x < battleground.length; x++) {
-            System.out.print((x + 1) + "|");
-
-            for (int y = 0; y < battleground[x].length; y++) {
-                System.out.print(battleground[x][y]);
-            }
-
-            System.out.println("|" + (x + 1));
         }
     }
 }
