@@ -1,6 +1,6 @@
 public class Common
 {
-    public static void addEmptyLine()
+    public static void EmptyLine()
     {
         System.out.println();
     }
