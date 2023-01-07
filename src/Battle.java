@@ -85,9 +85,10 @@ public class Battle
             case Const.COMPUTER -> {
                 return Battlegrounds.playerBattleGround[xAxis - 1][yAxis - 1];
             }
+            default -> {
+                return null;
+            }
         }
-
-        return null;
     }
 
     private static boolean isAlreadyAttackedByPlayer(int xAxis, int yAxis)
