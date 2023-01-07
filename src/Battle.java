@@ -19,59 +19,59 @@ public class Battle
         int x;
         int y;
 
-        Common.addEmptyLine();
+        Common.EmptyLine();
         System.out.println("Your turn to attack! give me your coordinates!");
 
         do {
             x = Validator.getValidCoordinate("X");
             y = Validator.getValidCoordinate("Y");
 
-            if (isAlreadyAttackedByPlayer(x, y)) {
-                retryAttack = true;
+            String result = Objects.requireNonNull(getAttackResult(x, y, Const.PLAYER));
+
+            retryAttack = isAlreadyAttackedByPlayer(x,y);
+
+            if (retryAttack) {
                 continue;
             }
 
-            String result = Objects.requireNonNull(getAttackResult(x, y, Const.PLAYER));
-
-            if (isMiss(result)) {
-                Battlegrounds.playerShotsGround[x - 1][y - 1] = Const.SHOT_SYMBOL;
-                retryAttack = false;
-            }
-
-            if (isHit(result)) {
+            if (!Validator.isFieldEmpty(result)) {
+                System.out.println("Hit, and sunk!");
                 Battlegrounds.computerBattleGround[x - 1][y - 1] = Const.EMPTY_FIELD_SYMBOL;
-                Battlegrounds.playerShotsGround[x - 1][y - 1] = Const.SHOT_SYMBOL;
                 --BattleShips.computerShips;
-                retryAttack = false;
+            } else {
+                System.out.println("Missed!");
             }
+
+            Battlegrounds.playerShotsGround[x - 1][y - 1] = Const.FIELD_WAS_SHOT_SYMBOL;
+
         } while (retryAttack);
     }
 
     private static void computerAttack()
     {
-        Common.addEmptyLine();
+        Common.EmptyLine();
         System.out.print("Computer turn...");
 
         do {
-            int x = random.nextInt(Const.BATTLEGROUND_SIZE - 1) + 1;
-            int y = random.nextInt(Const.BATTLEGROUND_SIZE - 1) + 1;
+            int x = random.nextInt(Const.BATTLEGROUND_SIZE) + 1;
+            int y = random.nextInt(Const.BATTLEGROUND_SIZE) + 1;
 
             String result = Objects.requireNonNull(getAttackResult(x, y, Const.COMPUTER));
 
-            if (isMiss(result)) {
-                Battlegrounds.playerBattleGround[x - 1][y - 1] = Const.SHOT_SYMBOL;
-                retryAttack = false;
+            retryAttack = Validator.wasFieldShot(result);
+
+            if (retryAttack) {
+                continue;
             }
 
-            if (isAlreadyAttackedByComputer(result)) {
-                retryAttack = true;
-            }
-
-            if (isHit(result)) {
-                Battlegrounds.playerBattleGround[x - 1][y - 1] = Const.SHOT_SYMBOL;
+            if (!Validator.isFieldEmpty(result)) {
+                System.out.println("Hit, and sunk!");
                 --BattleShips.playerShips;
-                retryAttack = false;
+            } else {
+                System.out.println("Missed!");
             }
+
+            Battlegrounds.playerBattleGround[x - 1][y - 1] = Const.FIELD_WAS_SHOT_SYMBOL;
 
         } while (retryAttack);
     }
@@ -90,38 +90,10 @@ public class Battle
         return null;
     }
 
-    private static boolean isHit(String attackResult)
-    {
-        if (Objects.equals(attackResult, Const.SHIP_SYMBOL)) {
-            System.out.println("Hit, and sunk!");
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private static boolean isMiss(String attackResult)
-    {
-        if (Objects.equals(attackResult, Const.EMPTY_FIELD_SYMBOL)) {
-            Common.addEmptyLine();
-            System.out.print("Miss!");
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private static boolean isAlreadyAttackedByComputer(String attackResult)
-    {
-        return Objects.equals(attackResult, Const.SHOT_SYMBOL);
-    }
-
     private static boolean isAlreadyAttackedByPlayer(int xAxis, int yAxis)
     {
-        if (Objects.equals(Battlegrounds.playerShotsGround[xAxis - 1][yAxis - 1], Const.SHOT_SYMBOL)) {
-            Common.addEmptyLine();
+        if (Validator.wasFieldShot(Battlegrounds.playerShotsGround[xAxis - 1][yAxis - 1])) {
+            Common.EmptyLine();
             System.out.println("You already attacked this field, try again!");
 
             return true;
