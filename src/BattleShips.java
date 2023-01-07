@@ -20,12 +20,12 @@ public class BattleShips
     {
         if (BattleShips.computerShips == 0) {
             Common.addEmptyLine();
-            System.out.print("Gratulacje, wygrałeś!");
+            System.out.print("Congratulations, you won!");
         }
 
         if (BattleShips.playerShips == 0) {
             Common.addEmptyLine();
-            System.out.print("Przykro mi, przegrałeś. Spróbuj ponownie!");
+            System.out.print("Sorry, you lost. Better luck next time!");
         }
 
         if (BattleShips.playerShips == 0 && BattleShips.computerShips == 0) {

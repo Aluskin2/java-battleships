@@ -26,15 +26,15 @@ public class Battlegrounds
     public static void printBattlegrounds()
     {
         Common.addEmptyLine();
-        System.out.print("POLE GRACZA");
+        System.out.print("PLAYER FIELD");
         printBattleground(playerBattleGround);
 
         Common.addEmptyLine();
-        System.out.print("STRZAŁY GRACZA / POLE KOMPUTERA");
+        System.out.print("PLAYER SHOOTS / COMPUTER FIELD");
         printBattleground(playerShotsGround);
 
         Common.addEmptyLine();
-        System.out.printf("Twoje statki: %s | Statki komputera: %s", BattleShips.playerShips, BattleShips.computerShips);
+        System.out.printf("Your ships: %s | Computer ships: %s", BattleShips.playerShips, BattleShips.computerShips);
     }
 
     private static void printBattleground(String[][] battleground)
@@ -82,20 +82,20 @@ public class Battlegrounds
         int y;
         int x;
 
-        System.out.printf("Graczu, rozmieść swoje statki! (ilość: %d)", BattleShips.playerShips);
+        System.out.printf("Player, deploy your ships! (Count: %d)", BattleShips.playerShips);
         Common.addEmptyLine();
-        System.out.printf("Wymiary pola bitwy: %s/%s", Const.BATTLEGROUND_SIZE, Const.BATTLEGROUND_SIZE);
+        System.out.printf("Battleground size: %s/%s", Const.BATTLEGROUND_SIZE, Const.BATTLEGROUND_SIZE);
         Common.addEmptyLine();
 
         for (int i = 1; i <= BattleShips.playerShips;) {
-            System.out.printf("Rozmieść %d statek", i);
+            System.out.printf("Deploy %d ship", i);
             Common.addEmptyLine();
 
             x = Validator.getValidCoordinate("X");
             y = Validator.getValidCoordinate("Y");
 
             if (Objects.equals(Battlegrounds.playerBattleGround[x - 1][y - 1], Const.SHIP_SYMBOL)) {
-                System.out.print("Nie możesz umieścić dwóch statków w tym samym miejscu!");
+                System.out.print("You can't place two ships at the same coordinate!");
             }
 
             Battlegrounds.playerBattleGround[x - 1][y - 1] = Const.SHIP_SYMBOL;
@@ -106,7 +106,7 @@ public class Battlegrounds
     private static void deployComputerBattleShips()
     {
         Common.addEmptyLine();
-        System.out.println("Rozmieszczam sześć statków komputera na planszy...");
+        System.out.printf("Deploying %d ships on the computer battlefield...", BattleShips.computerShips);
 
         for (int i = 1; i <= BattleShips.computerShips; ) {
             int x = random.nextInt(Const.BATTLEGROUND_SIZE - 1) + 1;
@@ -114,7 +114,7 @@ public class Battlegrounds
 
             if (Objects.equals(Battlegrounds.computerBattleGround[x-1][y-1], Const.EMPTY_FIELD_SYMBOL)) {
                 Battlegrounds.computerBattleGround[x-1][y-1] = Const.SHIP_SYMBOL;
-                System.out.println(i + ". statek rozmieszczony");
+                System.out.println(i + ". battleship deployed");
                 i++;
             }
         }
