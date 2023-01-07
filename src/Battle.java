@@ -28,6 +28,7 @@ public class Battle
 
             if (isAlreadyAttackedByPlayer(x, y)) {
                 retryAttack = true;
+                continue;
             }
 
             String result = Objects.requireNonNull(getAttackResult(x, y, Const.PLAYER));
@@ -121,7 +122,7 @@ public class Battle
     {
         if (Objects.equals(Battlegrounds.playerShotsGround[xAxis - 1][yAxis - 1], Const.SHOT_SYMBOL)) {
             Common.addEmptyLine();
-            System.out.print("Już wykonywałeś atak na te koordynaty, spróbuj ponownie!");
+            System.out.println("Już wykonywałeś atak na te koordynaty, spróbuj ponownie!");
 
             return true;
         }
