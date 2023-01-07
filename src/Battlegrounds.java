@@ -96,6 +96,8 @@ public class Battlegrounds
 
             if (Objects.equals(Battlegrounds.playerBattleGround[x - 1][y - 1], Const.SHIP_SYMBOL)) {
                 System.out.print("You can't place two ships at the same coordinate!");
+                Common.addEmptyLine();
+                continue;
             }
 
             Battlegrounds.playerBattleGround[x - 1][y - 1] = Const.SHIP_SYMBOL;
@@ -107,6 +109,7 @@ public class Battlegrounds
     {
         Common.addEmptyLine();
         System.out.printf("Deploying %d ships on the computer battlefield...", BattleShips.computerShips);
+        Common.addEmptyLine();
 
         for (int i = 1; i <= BattleShips.computerShips; ) {
             int x = random.nextInt(Const.BATTLEGROUND_SIZE - 1) + 1;
