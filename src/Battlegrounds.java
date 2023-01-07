@@ -40,13 +40,11 @@ public class Battlegrounds
     private static void printBattleground(String[][] battleground)
     {
         Common.addEmptyLine();
-        System.out.print("  ");
         printBattlegroundHeaderOrFooter();
 
         Common.addEmptyLine();
         printBattlegroundBody(battleground);
 
-        System.out.print("  ");
         printBattlegroundHeaderOrFooter();
         Common.addEmptyLine();
     }
@@ -96,6 +94,8 @@ public class Battlegrounds
 
     private static void printBattlegroundHeaderOrFooter()
     {
+        System.out.print("  ");
+
         for (int i = 1; i <= Const.BATTLEGROUND_SIZE; i++) {
             System.out.print(i);
         }
