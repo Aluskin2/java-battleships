@@ -6,6 +6,7 @@ You can start the game running the **Main.java** file
 Battleground size and number of ships can be modified in **Const.java** file
 
 The game is started by player placing ships on the battleground on given X and Y cooridnates
+
 Next the computer is placing identical number of ships on random coorinates
 
 After deployment of ships,
