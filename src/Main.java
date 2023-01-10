@@ -18,14 +18,12 @@ public class Main
         if (BattleShips.playerShips == 0 && BattleShips.computerShips == 0) {
             Common.EmptyLine();
             System.out.print("A TIE!");
-        }
 
-        if (BattleShips.computerShips == 0) {
+        } else if (BattleShips.computerShips == 0) {
             Common.EmptyLine();
             System.out.print("Congratulations, you won!");
-        }
 
-        if (BattleShips.playerShips == 0) {
+        } else if (BattleShips.playerShips == 0) {
             Common.EmptyLine();
             System.out.print("Sorry, you lost. Better luck next time!");
         }
